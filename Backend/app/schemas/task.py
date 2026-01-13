@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+
 class TaskCreate(BaseModel):
     title: str
     status: str = "pending"
@@ -8,4 +9,4 @@ class TaskResponse(BaseModel):
     status: str
     
     class Config:
-        orm_mode = True    
+        from_attributes = True
