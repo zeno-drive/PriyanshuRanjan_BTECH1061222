@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from app.schemas.task import TaskCreate, TaskResponse
 from app.models.task import Task
 from app.dependencies import get_db
+from app.dependencies_auth import get_current_user
+from app.models.user import User
 
 router=APIRouter()
 
@@ -19,6 +21,8 @@ def create_task(task: TaskCreate, db:Session= Depends(get_db)):
     return new_task
     
 @router.get("/", response_model=list[TaskResponse])
-def get_tasks(db: Session = Depends(get_db)):
-    tasks = db.query(Task).all()
-    return tasks
+def get_tasks(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return db.query(Task).all()
